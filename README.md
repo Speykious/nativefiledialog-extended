@@ -9,8 +9,8 @@ This library is based on Michael Labbe's Native File Dialog ([mlabbe/nativefiled
 
 Features:
 
-- Lean C API, static library -- no C++/ObjC runtime needed
-- Supports Windows (MSVC, MinGW), MacOS (Clang), and Linux (GCC, Clang)
+- Lean C API, static library &mdash; no C++/ObjC runtime needed
+- Supports Windows (MSVC, MinGW), MacOS (Clang), and Linux (GTK, portal) (GCC, Clang)
 - Zlib licensed
 - Friendly names for filters (e.g. `C/C++ Source files (*.c;*.cpp)` instead of `(*.c;*.cpp)`) on platforms that support it
 - Automatically append file extension on platforms where users expect it
@@ -18,7 +18,7 @@ Features:
 - Support for setting a default file name (e.g. `Untitled.c`)
 - Consistent UTF-8 support on all platforms
 - Native character set (UTF-16 `wchar_t`) support on Windows
-- Initialization and de-initialization of platform library (e.g. COM (Windows) / GTK (Linux)) decoupled from dialog functions, so applications can choose when to initialize/de-initialize
+- Initialization and de-initialization of platform library (e.g. COM (Windows) / GTK (Linux GTK) / D-Bus (Linux portal)) decoupled from dialog functions, so applications can choose when to initialize/de-initialize
 - Multiple file selection support (for file open dialog)
 - Support for Vista's modern `IFileDialog` on Windows
 - No third party dependencies
@@ -36,6 +36,7 @@ Features added in Native File Dialog Extended:
 - Automatically appending file extensions
 - Support for setting a default file name
 - Native character set (UTF-16 `wchar_t`) support on Windows
+- xdg-desktop-portal support on Linux that opens the "native" file chooser (see "Usage" section below)
 - Initialization and de-initialization of platform library decoupled from file dialog functions
 - Modern CMake build system
 - Optional C++ wrapper with `unique_ptr` auto-freeing semantics and optional parameters
@@ -116,6 +117,10 @@ to build a debug version of the library instead.
 If you want to build the sample programs,
 add `-DNFD_BUILD_TESTS=ON` (sample programs are not built by default).
 
+On Linux, if you want to use the Flatpak desktop portal instead of GTK, add `-DNFD_PORTAL=ON`.  See the "Usage" section below for more information.
+
+See the [CI build file](.github/workflows/cmake.yml) for some examples.
+
 ### Visual Studio on Windows
 Recent versions of Visual Studio have CMake support built into the IDE. 
 You should be able to "Open Folder" in the project root directory,
@@ -135,7 +140,12 @@ and it probably works on Visual Studio 2017 too.
 ## Dependencies
 
 ### Linux
-`apt-get libgtk-3-dev` installs the GTK+3 dependency on debian based systems.
+
+#### GTK (default)
+Make sure `libgtk-3-dev` is installed on your system.
+
+#### Portal
+Make sure `libdbus-1-dev` is installed on your system.
 
 ### MacOS
 On MacOS, add `AppKit` to the list of frameworks.
@@ -229,6 +239,22 @@ NFD_Quit(); // deinitialize NFDe first
 
 SDL_Quit(); // Then deinitialize SDL2
 ```
+
+## Using xdg-desktop-portal on Linux
+
+On Linux, you can use the portal implementation instead of GTK, which will open the "native" file chooser selected by the OS or customized by the user.  The user must have `xdg-desktop-portal` and a suitable backend installed (this comes pre-installed with most common distros), otherwise `NFD_ERROR` will be returned.
+
+The portal implementation is much less battle-tested than the GTK implementation.  There may be bugs &mdash; please report them on the issue tracker.
+
+To use the portal implementation, add `-DNFD_PORTAL=ON` to the build command.
+
+*Note:  Setting a default path is not supported by the portal implementation, and any default path passed to NFDe will be ignored.  This is a limitation of the portal API, so there is no way NFDe can work around it.*
+
+### What is a portal?
+
+Unlike Windows and MacOS, Linux does not have a file chooser baked into the operating system.  Linux applications that want a file chooser usually link with a library that provides one (such as GTK, as in the Linux screenshot above).  This is a mostly acceptable solution that many applications use, but may make the file chooser look foreign on non-GTK distros.
+
+Flatpak was introduced in 2015, and with it came a standardized interface to open a file chooser.  Applications using this interface did not need to come with a file chooser, and could use the one provided by Flatpak.  This interface became known as the desktop portal, and its use expanded to non-Flatpak applications.  Now, most major desktop Linux distros come with the desktop portal installed, with file choosers that fit the theme of the distro.  Users can also install a different portal backend if desired.  There are currently two known backends: GTK and KDE.  (XFCE does not currently seem to have a portal backend.)
 
 # Known Limitations #
 
