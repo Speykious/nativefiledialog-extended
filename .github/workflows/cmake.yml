@@ -41,7 +41,7 @@ jobs:
         path: |
           build/src/libnfd.so
           build/test/test_*
-  
+
   build-ubuntu-portal-gcc:
     name: Ubuntu latest, desktop portals - GCC
     runs-on: ubuntu-latest
@@ -129,7 +129,7 @@ jobs:
       with:
         name: Windows latest - MSVC
         path: |
-          build/src/Release/nfd.dll
+          build/src/Release/libnfd.dll
           build/test/Release/test_*
   
   build-windows-clang:
@@ -150,7 +150,7 @@ jobs:
       with:
         name: Windows latest - Clang
         path: |
-          build/src/Release/nfd.dll
+          build/src/Release/libnfd.dll
           build/test/Release/test_*
   
   build-windows-mingw:
@@ -183,5 +183,5 @@ jobs:
       with:
         name: Windows latest - MinGW
         path: |
-          build/src/nfd.dll
+          build/src/libnfd.dll
           build/test/test_*
