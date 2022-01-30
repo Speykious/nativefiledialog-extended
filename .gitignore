@@ -1,6 +1,8 @@
 # VS CMake default output
 /.vs/
 /out/
+/build/
+/.cache/
 /CMakeSettings.json
 
 # Mac OS X rubbish
