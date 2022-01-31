@@ -79,7 +79,7 @@ void NFD_Quit(void);
 /* If filterCount is zero, filterList is ignored (you can use NULL) */
 /* If defaultPath is NULL, the operating system will decide */
 nfdresult_t NFD_OpenDialogN(nfdnchar_t** outPath,
-                            const nfdnfilteritem_t* filterList,
+                            const nfdnfilteritem_t filterList[],
                             nfdfiltersize_t filterCount,
                             const nfdnchar_t* defaultPath);
 
@@ -89,7 +89,7 @@ nfdresult_t NFD_OpenDialogN(nfdnchar_t** outPath,
 /* If filterCount is zero, filterList is ignored (you can use NULL) */
 /* If defaultPath is NULL, the operating system will decide */
 nfdresult_t NFD_OpenDialogMultipleN(const nfdpathset_t** outPaths,
-                                    const nfdnfilteritem_t* filterList,
+                                    const nfdnfilteritem_t filterList[],
                                     nfdfiltersize_t filterCount,
                                     const nfdnchar_t* defaultPath);
 
@@ -99,7 +99,7 @@ nfdresult_t NFD_OpenDialogMultipleN(const nfdpathset_t** outPaths,
 /* If filterCount is zero, filterList is ignored (you can use NULL) */
 /* If defaultPath is NULL, the operating system will decide */
 nfdresult_t NFD_SaveDialogN(nfdnchar_t** outPath,
-                            const nfdnfilteritem_t* filterList,
+                            const nfdnfilteritem_t filterList[],
                             nfdfiltersize_t filterCount,
                             const nfdnchar_t* defaultPath,
                             const nfdnchar_t* defaultName);
@@ -183,7 +183,7 @@ void NFD_FreePathU8(nfdu8char_t* outPath);
 /* It is the caller's responsibility to free `outPath` via NFD_FreePathU8() if this function returns
  * NFD_OKAY */
 nfdresult_t NFD_OpenDialogU8(nfdu8char_t** outPath,
-                             const nfdu8filteritem_t* filterList,
+                             const nfdu8filteritem_t filterList[],
                              nfdfiltersize_t count,
                              const nfdu8char_t* defaultPath);
 
@@ -191,7 +191,7 @@ nfdresult_t NFD_OpenDialogU8(nfdu8char_t** outPath,
 /* It is the caller's responsibility to free `outPaths` via NFD_PathSet_Free() if this function
  * returns NFD_OKAY */
 nfdresult_t NFD_OpenDialogMultipleU8(const nfdpathset_t** outPaths,
-                                     const nfdu8filteritem_t* filterList,
+                                     const nfdu8filteritem_t filterList[],
                                      nfdfiltersize_t count,
                                      const nfdu8char_t* defaultPath);
 
@@ -199,7 +199,7 @@ nfdresult_t NFD_OpenDialogMultipleU8(const nfdpathset_t** outPaths,
 /* It is the caller's responsibility to free `outPath` via NFD_FreePathU8() if this function returns
  * NFD_OKAY */
 nfdresult_t NFD_SaveDialogU8(nfdu8char_t** outPath,
-                             const nfdu8filteritem_t* filterList,
+                             const nfdu8filteritem_t filterList[],
                              nfdfiltersize_t count,
                              const nfdu8char_t* defaultPath,
                              const nfdu8char_t* defaultName);
